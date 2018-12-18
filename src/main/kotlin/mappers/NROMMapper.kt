@@ -7,12 +7,12 @@ class NROMMapper(romLoader: ROMLoader) : Mapper(romLoader) {
     override fun loadROMValues() {
         super.loadROMValues()
 
-        val shiftedprg = IntArray(65536)
-        System.arraycopy(prg, 0, shiftedprg, 0x8000, prg.size)
+        val shiftedPrg = IntArray(65536)
+        System.arraycopy(prg, 0, shiftedPrg, 0x8000, prg.size)
         if (prgSize <= 16384) {
-            System.arraycopy(prg, 0, shiftedprg, 0xc000, prg.size)
+            System.arraycopy(prg, 0, shiftedPrg, 0xc000, prg.size)
         }
-        prg = shiftedprg
+        prg = shiftedPrg
     }
 
     override fun cartridgeRead(address: Int): Int {

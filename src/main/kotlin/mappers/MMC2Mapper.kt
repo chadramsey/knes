@@ -5,12 +5,12 @@ import constants.DataConstants
 
 class MMC2Mapper(romLoader: ROMLoader) : Mapper(romLoader) {
 
-    private var chrlatchL = true
-    private var chrlatchR = false
-    private var chrbankL1 = 0
-    private var chrbankR1 = 0
-    private var chrbankL2 = 0
-    private var chrbankR2 = 0
+    private var chrLatchL = true
+    private var chrLatchR = false
+    private var chrBankL1 = 0
+    private var chrBankR1 = 0
+    private var chrBankL2 = 0
+    private var chrBankR2 = 0
 
     override fun loadROMValues() {
         super.loadROMValues()
@@ -32,16 +32,16 @@ class MMC2Mapper(romLoader: ROMLoader) : Mapper(romLoader) {
                 prgMap[i] = 1024 * (i + 8 * (data and 0xf)) and chrSize - 1
             }
         } else if (address in 0xb000..0xbfff) {
-            chrbankL1 = data and 0x1f
+            chrBankL1 = data and 0x1f
             setupPPUBanks()
         } else if (address in 0xc000..0xcfff) {
-            chrbankL2 = data and 0x1f
+            chrBankL2 = data and 0x1f
             setupPPUBanks()
         } else if (address in 0xd000..0xdfff) {
-            chrbankR1 = data and 0x1f
+            chrBankR1 = data and 0x1f
             setupPPUBanks()
         } else if (address in 0xe000..0xefff) {
-            chrbankR2 = data and 0x1f
+            chrBankR2 = data and 0x1f
             setupPPUBanks()
         } else if (address in 0xf000..0xffff) {
             setMapperMirrorMode(if (data and DataConstants.BIT0 != 0) ScreenMirrorType.HORIZONTAL_MIRROR else ScreenMirrorType.VERTICAL_MIRROR)
@@ -53,23 +53,23 @@ class MMC2Mapper(romLoader: ROMLoader) : Mapper(romLoader) {
         if (address and DataConstants.BIT3 != 0) {
             when (address shr 4) {
                 0xfd -> if (address and 3 == 0) {
-                    chrlatchL = false
+                    chrLatchL = false
                     setupPPUBanks()
                 }
                 0xfe -> {
                     if (address and 3 == 0) {
-                        chrlatchL = true
+                        chrLatchL = true
                         setupPPUBanks()
                     }
-                    chrlatchR = false
+                    chrLatchR = false
                     setupPPUBanks()
                 }
                 0x1fd -> {
-                    chrlatchR = false
+                    chrLatchR = false
                     setupPPUBanks()
                 }
                 0x1fe -> {
-                    chrlatchR = true
+                    chrLatchR = true
                     setupPPUBanks()
                 }
                 else -> {
@@ -80,15 +80,15 @@ class MMC2Mapper(romLoader: ROMLoader) : Mapper(romLoader) {
     }
 
     private fun setupPPUBanks() {
-        if (chrlatchL) {
-            setPPUBank(4, 0, chrbankL2)
+        if (chrLatchL) {
+            setPPUBank(4, 0, chrBankL2)
         } else {
-            setPPUBank(4, 0, chrbankL1)
+            setPPUBank(4, 0, chrBankL1)
         }
-        if (chrlatchR) {
-            setPPUBank(4, 4, chrbankR2)
+        if (chrLatchR) {
+            setPPUBank(4, 4, chrBankR2)
         } else {
-            setPPUBank(4, 4, chrbankR1)
+            setPPUBank(4, 4, chrBankR1)
         }
     }
 

@@ -24,7 +24,7 @@ Z -> B
 ```
 
 ### Versions
-#### v0.0.1
+#### v0.1.0
 This is a bare bones release to get the ball rolling for community support. Features are very limited 
 but should provide enough mapper support for running a number of well-known NTSC-based titles. Support for
 audio remains to be been implemented.

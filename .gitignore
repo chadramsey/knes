@@ -1,0 +1,11 @@
+out\
+build\
+gradle\
+local.properties
+.gradle
+.bat
+*.class
+
+# IntelliJ
+.idea
+*.iml

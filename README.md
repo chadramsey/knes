@@ -37,6 +37,8 @@ the system CPU.
 - Loading a ROM on top of a currently running ROM will cause undesirable results. Reset functionality
 remains to be implemented.
 
+Please submit any issues or features requests under 'issues' accordingly.
+
 ### Credits
 A number of class implementations in this project are based off of Andrew Hoffman's 
 [halfnes](https://github.com/andrew-hoffman/halfnes). For anyone seeking a fully comprehensive

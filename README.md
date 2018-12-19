@@ -42,4 +42,4 @@ Please submit any issues or features requests under 'issues' accordingly.
 ### Credits
 A number of class implementations in this project are based off of Andrew Hoffman's 
 [halfnes](https://github.com/andrew-hoffman/halfnes). For anyone seeking a fully comprehensive
-NES emulator written for the JVM, please check out his work.
+NES emulator written for the JVM, please check out his work. Another absolutely necessary source of information for this project comes from the [nesdev Wiki](https://wiki.nesdev.com/w/index.php/NES_reference_guide), which contains both hardware and software documentation for everything NES.

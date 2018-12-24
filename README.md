@@ -25,7 +25,7 @@ Z -> B
 
 ### Versions
 #### [v0.1.0](https://github.com/chadramsey/knes/releases/tag/v0.1.0)
-This is a bare bones release to get the ball rolling for community support. Features are very limited 
+This is a bare bones release to get the ball rolling for documentation and community support. Features are very limited 
 but should provide enough mapper support for running a number of well-known NTSC-based titles. Support for
 audio remains to be been implemented.
 - NTSC support (PAL to come in a future release)
@@ -42,4 +42,4 @@ Please submit any issues or features requests under 'issues' accordingly.
 ### Credits
 A number of class implementations in this project are based off of Andrew Hoffman's 
 [halfnes](https://github.com/andrew-hoffman/halfnes). For anyone seeking a fully comprehensive
-NES emulator written for the JVM, please check out his work.
+NES emulator written for the JVM, please check out his work. Another absolutely necessary source of information for this project comes from the [nesdev Wiki](https://wiki.nesdev.com/w/index.php/NES_reference_guide), which contains both hardware and software documentation for everything NES.

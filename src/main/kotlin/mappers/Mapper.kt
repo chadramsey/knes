@@ -97,15 +97,15 @@ open class Mapper(val romLoader: ROMLoader) {
 
     open fun cartridgeWrite(address: Int, data: Int) {
         if (address in 0x6000..0x8000) {
-            prgRam[address and 0x1fff] = data
+            prgRam[address and 0x1FFF] = data
         }
     }
 
     open fun cartridgeRead(address: Int): Int {
         if (address >= 0x8000) {
-            return prg[prgMap[address and 0x7fff shr 10] + (address and 1023)]
+            return prg[prgMap[address and 0x7FFF shr 10] + (address and 0x3FF)]
         } else if (address >= 0x6000 && hasPrgRam) {
-            return prgRam[address and 0x1fff]
+            return prgRam[address and 0x1FFF]
         }
         return address shr 8
     }
@@ -113,29 +113,29 @@ open class Mapper(val romLoader: ROMLoader) {
     open fun ppuRead(address: Int): Int {
         var address = address
         return if (address < 0x2000) {
-            chr[chrMap[address shr 10] + (address and 1023)]
+            chr[chrMap[address shr 10] + (address and 0x3FF)]
         } else {
             when (address and 0xc00) {
-                0 -> nameTablePointer0[address and 0x3ff]
-                0x400 -> nameTablePointer1[address and 0x3ff]
-                0x800 -> nameTablePointer2[address and 0x3ff]
-                0xc00 -> if (address >= 0x3f00) {
-                    address = address and 0x1f
+                0 -> nameTablePointer0[address and 0x3FF]
+                0x400 -> nameTablePointer1[address and 0x3FF]
+                0x800 -> nameTablePointer2[address and 0x3FF]
+                0xc00 -> if (address >= 0x3F00) {
+                    address = address and 0x1F
                     if (address >= 0x10 && address and 3 == 0) {
                         address -= 0x10
                     }
                     NESMain.ppu!!.colorPalette[address]
                 } else {
-                    nameTablePointer3[address and 0x3ff]
+                    nameTablePointer3[address and 0x3FF]
                 }
-                else -> if (address >= 0x3f00) {
-                    address = address and 0x1f
+                else -> if (address >= 0x3F00) {
+                    address = address and 0x1F
                     if (address >= 0x10 && address and 3 == 0) {
                         address -= 0x10
                     }
                     NESMain.ppu!!.colorPalette[address]
                 } else {
-                    nameTablePointer3[address and 0x3ff]
+                    nameTablePointer3[address and 0x3FF]
                 }
             }
         }
@@ -143,24 +143,24 @@ open class Mapper(val romLoader: ROMLoader) {
 
     open fun ppuWrite(address: Int, data: Int) {
         var address = address
-        address = address and 0x3fff
+        address = address and 0x3FFF
         if (address < 0x2000) {
             if (hasChrRam) {
-                chr[chrMap[address shr 10] + (address and 1023)] = data
+                chr[chrMap[address shr 10] + (address and 0x3FF)] = data
             }
         } else {
             when (address and 0xc00) {
-                0x0 -> nameTablePointer0[address and 0x3ff] = data
-                0x400 -> nameTablePointer1[address and 0x3ff] = data
-                0x800 -> nameTablePointer2[address and 0x3ff] = data
-                0xc00 -> if (address in 0x3f00..0x3fff) {
-                    address = address and 0x1f
+                0x0 -> nameTablePointer0[address and 0x3FF] = data
+                0x400 -> nameTablePointer1[address and 0x3FF] = data
+                0x800 -> nameTablePointer2[address and 0x3FF] = data
+                0xc00 -> if (address in 0x3F00..0x3FFF) {
+                    address = address and 0x1F
                     if (address >= 0x10 && address and 3 == 0) {
                         address -= 0x10
                     }
-                    NESMain.ppu!!.colorPalette[address] = data and 0x3f
+                    NESMain.ppu!!.colorPalette[address] = data and 0x3F
                 } else {
-                    nameTablePointer3[address and 0x3ff] = data
+                    nameTablePointer3[address and 0x3FF] = data
                 }
             }
         }

@@ -14,7 +14,8 @@ class CPU(private val cpuRAM: RAM) {
     private var registerY: Int = 0
     private var registerX: Int = 0
     private var registerA: Int = 0
-    private var registerS: Int = 0xFD
+
+    private var stackPointer: Int = 0xFD
 
     private var programCounter: Int = 0
     private var interruptIndex: Int = 0
@@ -918,11 +919,11 @@ class CPU(private val cpuRAM: RAM) {
             }
             // Stack
             0x9A -> {
-                registerS = registerX
+                stackPointer = registerX
                 cycles += 2
             }
             0xBA -> {
-                registerX = registerS
+                registerX = stackPointer
                 cycles += 2
                 setflags(registerX)
             }
@@ -1004,9 +1005,9 @@ class CPU(private val cpuRAM: RAM) {
     }
 
     private fun pushByteValueToRAM(byte: Int) {
-        cpuRAM.write((0x100 + (registerS and 0xFF)), byte)
-        --registerS
-        registerS = registerS and 0xFF
+        cpuRAM.write((0x100 + (stackPointer and 0xFF)), byte)
+        --stackPointer
+        stackPointer = stackPointer and 0xFF
     }
 
     private fun fetchBytesFromFlags(): Int {
@@ -1132,15 +1133,15 @@ class CPU(private val cpuRAM: RAM) {
     }
 
     private fun pop(): Int {
-        ++registerS
-        registerS = registerS and 0xff
-        return cpuRAM.read(0x100 + registerS)
+        ++stackPointer
+        stackPointer = stackPointer and 0xff
+        return cpuRAM.read(0x100 + stackPointer)
     }
 
     private fun push(byteToPush: Int) {
-        cpuRAM.write(0x100 + (registerS and 0xff), byteToPush)
-        --registerS
-        registerS = registerS and 0xff
+        cpuRAM.write(0x100 + (stackPointer and 0xff), byteToPush)
+        --stackPointer
+        stackPointer = stackPointer and 0xff
     }
 
     private fun branch(isTaken: Boolean) {

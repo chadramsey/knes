@@ -243,12 +243,12 @@ class PPU(private val mapper: Mapper) {
             0
         cycleCount = skip
         while (cycleCount < 341) {
-            clock()
+            performClockOperation()
             ++cycleCount
         }
     }
 
-    private fun clock() {
+    private fun performClockOperation() {
         if (cycleCount == 1) {
             if (scanLineIndex == 0) {
                 isDotCrawl = renderingOn()
@@ -259,7 +259,7 @@ class PPU(private val mapper: Mapper) {
         }
         if (scanLineIndex < 240 || scanLineIndex == scanLineCount - 1) {
             if (renderingOn() && (cycleCount in 1..256 || cycleCount in 321..336)) {
-                bgFetch()
+                performBackgroundFetch()
             } else if (cycleCount == 257 && renderingOn()) {
                 registerV = registerV and 0x41f.inv()
                 registerV = registerV or (registerT and 0x41f)
@@ -267,14 +267,14 @@ class PPU(private val mapper: Mapper) {
                 oamAddress = 0
             }
             if (cycleCount == 340 && renderingOn()) {
-                fetchNTByte()
-                fetchNTByte()
+                fetchNametableByte()
+                fetchNametableByte()
             }
             if (cycleCount == 65 && renderingOn()) {
                 oamStart = oamAddress
             }
             if (cycleCount == 260 && renderingOn()) {
-                evalSprites()
+                evaluateSprites()
             }
             if (scanLineIndex == scanLineCount - 1) {
                 if (cycleCount == 0) {
@@ -292,8 +292,8 @@ class PPU(private val mapper: Mapper) {
             val bufferOffset = (scanLineIndex shl 8) + (cycleCount - 1)
             when {
                 isBackgroundOn -> {
-                    val isBG = drawBGPixel(bufferOffset)
-                    drawSprites(scanLineIndex, cycleCount - 1, isBG)
+                    val isBackground = drawBackgroundPixel(bufferOffset)
+                    drawSprites(scanLineIndex, cycleCount - 1, isBackground)
                 }
                 isSpriteOn -> {
                     val backgroundColor = if (registerV in 16129..16382) mapper.ppuRead(registerV) else colorPalette[0]
@@ -326,11 +326,11 @@ class PPU(private val mapper: Mapper) {
         }
     }
 
-    private fun bgFetch() {
+    private fun performBackgroundFetch() {
         backgroundAttributeShiftHigh = backgroundAttributeShiftHigh or (nextAttribute shr 1 and 1)
         backgroundAttributeShiftLow = backgroundAttributeShiftLow or (nextAttribute and 1)
         when (cycleCount - 1 and 7) {
-            1 -> fetchNTByte()
+            1 -> fetchNametableByte()
             3 ->
                 followingBackgroundAttribute = getAttribute((registerV and 0xc00) + 0x23c0,
                         registerV and 0x1f,
@@ -351,7 +351,7 @@ class PPU(private val mapper: Mapper) {
             }
         }
         if (cycleCount in 321..336) {
-            bgShiftClock()
+            performBackgroundShiftClock()
         }
     }
 
@@ -380,34 +380,34 @@ class PPU(private val mapper: Mapper) {
         }
     }
 
-    private fun fetchNTByte() {
+    private fun fetchNametableByte() {
         tileAddress = mapper.ppuRead(
                 (registerV and 0xc00 or 0x2000) + (registerV and 0x3ff)) * 16 + if (isBackgroundPattern) 0x1000 else 0
     }
 
-    private fun drawBGPixel(bufferOffset: Int): Boolean {
-        val isBG: Boolean
+    private fun drawBackgroundPixel(bufferOffset: Int): Boolean {
+        val isBackground: Boolean
         if (isBackgroundClip && bufferOffset and 0xff < 8) {
             renderBitmap[bufferOffset] = colorPalette[0]
-            isBG = true
+            isBackground = true
         } else {
-            val bgPix = (backgroundShiftHigh shr -registerX + 16 and 1 shl 1) + (backgroundShiftLow shr -registerX + 16 and 1)
-            val bgPal = (backgroundAttributeShiftHigh shr -registerX + 8 and 1 shl 1) + (backgroundAttributeShiftLow shr -registerX + 8 and 1)
-            isBG = bgPix == 0
-            renderBitmap[bufferOffset] = if (isBG) colorPalette[0] else colorPalette[(bgPal shl 2) + bgPix]
+            val backgroundPixel = (backgroundShiftHigh shr -registerX + 16 and 1 shl 1) + (backgroundShiftLow shr -registerX + 16 and 1)
+            val backgroundPalette = (backgroundAttributeShiftHigh shr -registerX + 8 and 1 shl 1) + (backgroundAttributeShiftLow shr -registerX + 8 and 1)
+            isBackground = backgroundPixel == 0
+            renderBitmap[bufferOffset] = if (isBackground) colorPalette[0] else colorPalette[(backgroundPalette shl 2) + backgroundPixel]
         }
-        bgShiftClock()
-        return isBG
+        performBackgroundShiftClock()
+        return isBackground
     }
 
-    private fun bgShiftClock() {
+    private fun performBackgroundShiftClock() {
         backgroundShiftHigh = backgroundShiftHigh shl 1
         backgroundShiftLow = backgroundShiftLow shl 1
         backgroundAttributeShiftHigh = backgroundAttributeShiftHigh shl 1
         backgroundAttributeShiftLow = backgroundAttributeShiftLow shl 1
     }
 
-    private fun evalSprites() {
+    private fun evaluateSprites() {
         isSpriteZero = false
         var ypos: Int
         var offset: Int
@@ -492,7 +492,6 @@ class PPU(private val mapper: Mapper) {
         if (spritePixel == 0 || x < startDraw || !isSpriteOn) {
             return
         }
-
         if (isSpriteZero && index == 0 && !backgroundFlag &&
                 x < 255) {
             isSpriteZeroHit = true

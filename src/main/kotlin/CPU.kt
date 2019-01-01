@@ -37,7 +37,7 @@ class CPU(private val cpuRAM: RAM) {
 
     companion object {
         enum class Dummy {
-            ONCARRY,
+            CARRY,
             ALWAYS
         }
     }
@@ -126,11 +126,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0x7d -> {
-                adc(abs(registerX, Dummy.ONCARRY))
+                adc(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x79 -> {
-                adc(abs(registerY, Dummy.ONCARRY))
+                adc(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x61 -> {
@@ -138,7 +138,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0x71 -> {
-                adc(indY(Dummy.ONCARRY))
+                adc(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // AND
@@ -159,11 +159,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0x3D -> {
-                and(abs(registerX, Dummy.ONCARRY))
+                and(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x39 -> {
-                and(abs(registerY, Dummy.ONCARRY))
+                and(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x21 -> {
@@ -171,7 +171,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0x31 -> {
-                and(indY(Dummy.ONCARRY))
+                and(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // ASL
@@ -260,11 +260,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xdd -> {
-                cmp(registerA, abs(registerX, Dummy.ONCARRY))
+                cmp(registerA, abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0xd9 -> {
-                cmp(registerA, abs(registerY, Dummy.ONCARRY))
+                cmp(registerA, abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0xc1 -> {
@@ -272,7 +272,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0xd1 -> {
-                cmp(registerA, indY(Dummy.ONCARRY))
+                cmp(registerA, indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // CPX
@@ -360,11 +360,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0x5d -> {
-                eor(abs(registerX, Dummy.ONCARRY))
+                eor(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x59 -> {
-                eor(abs(registerY, Dummy.ONCARRY))
+                eor(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x41 -> {
@@ -372,7 +372,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0x51 -> {
-                eor(indY(Dummy.ONCARRY))
+                eor(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // Set carry flag
@@ -472,7 +472,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0xb3 -> {
-                lax(indY(Dummy.ONCARRY))
+                lax(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             0xa7 -> {
@@ -492,7 +492,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xbf -> {
-                lax(abs(registerY, Dummy.ONCARRY))
+                lax(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             // LDA
@@ -513,11 +513,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xbd -> {
-                lda(abs(registerX, Dummy.ONCARRY))
+                lda(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0xb9 -> {
-                lda(abs(registerY, Dummy.ONCARRY))
+                lda(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0xa1 -> {
@@ -525,7 +525,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0xb1 -> {
-                lda(indY(Dummy.ONCARRY))
+                lda(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // LDX
@@ -546,7 +546,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xbe -> {
-                ldx(abs(registerY, Dummy.ONCARRY))
+                ldx(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             // LDY
@@ -567,7 +567,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xbc -> {
-                ldy(abs(registerX, Dummy.ONCARRY))
+                ldy(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             // LSR
@@ -610,7 +610,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0x1c, 0x3c, 0x5c, 0x7c, 0xdc, 0xfc -> {
-                abs(registerX, Dummy.ONCARRY)
+                abs(registerX, Dummy.CARRY)
                 cycles += 4 + pageBoundryIndex
             }
             // ORA
@@ -631,11 +631,11 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0x1d -> {
-                ora(abs(registerX, Dummy.ONCARRY))
+                ora(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x19 -> {
-                ora(abs(registerY, Dummy.ONCARRY))
+                ora(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x01 -> {
@@ -643,52 +643,52 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0x11 -> {
-                ora(indY(Dummy.ONCARRY))
+                ora(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             // Registers
             0xAA -> {
                 registerX = registerA
                 cycles += 2
-                setflags(registerA)
+                setFlags(registerA)
             }
             0x8a -> {
                 registerA = registerX
                 cycles += 2
-                setflags(registerA)
+                setFlags(registerA)
             }
             0xca -> {
                 registerX--
                 registerX = registerX and 0xFF
-                setflags(registerX)
+                setFlags(registerX)
                 cycles += 2
             }
             0xe8 -> {
                 registerX++
                 registerX = registerX and 0xFF
-                setflags(registerX)
+                setFlags(registerX)
                 cycles += 2
             }
             0xa8 -> {
                 registerY = registerA
                 cycles += 2
-                setflags(registerA)
+                setFlags(registerA)
             }
             0x98 -> {
                 registerA = registerY
                 cycles += 2
-                setflags(registerA)
+                setFlags(registerA)
             }
             0x88 -> {
                 registerY--
                 registerY = registerY and 0xFF
-                setflags(registerY)
+                setFlags(registerY)
                 cycles += 2
             }
             0xc8 -> {
                 registerY++
                 registerY = registerY and 0xFF
-                setflags(registerY)
+                setFlags(registerY)
                 cycles += 2
             }
             0x33 -> {
@@ -809,7 +809,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 6
             }
             0xF1 -> {
-                sbc(indY(Dummy.ONCARRY))
+                sbc(indY(Dummy.CARRY))
                 cycles += 5 + pageBoundryIndex
             }
             0xE5 -> {
@@ -825,7 +825,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 2
             }
             0xF9 -> {
-                sbc(abs(registerY, Dummy.ONCARRY))
+                sbc(abs(registerY, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0xeb -> {
@@ -837,7 +837,7 @@ class CPU(private val cpuRAM: RAM) {
                 cycles += 4
             }
             0xFd -> {
-                sbc(abs(registerX, Dummy.ONCARRY))
+                sbc(abs(registerX, Dummy.CARRY))
                 cycles += 4 + pageBoundryIndex
             }
             0x07 -> {
@@ -925,7 +925,7 @@ class CPU(private val cpuRAM: RAM) {
             0xBA -> {
                 registerX = stackPointer
                 cycles += 2
-                setflags(registerX)
+                setFlags(registerX)
             }
             0x48 -> {
                 cpuRAM.read(programCounter + 1)
@@ -935,7 +935,7 @@ class CPU(private val cpuRAM: RAM) {
             0x68 -> {
                 cpuRAM.read(programCounter + 1)
                 registerA = pop()
-                setflags(registerA)
+                setFlags(registerA)
                 cycles += 4
             }
             0x08 -> {
@@ -1035,7 +1035,7 @@ class CPU(private val cpuRAM: RAM) {
         data = data shl 1 or if (isCarry) 1 else 0
         isCarry = data and DataConstants.BIT8 != 0
         data = data and 0xFF
-        setflags(data)
+        setFlags(data)
         cpuRAM.write(address, data)
     }
 
@@ -1043,7 +1043,7 @@ class CPU(private val cpuRAM: RAM) {
         registerA = registerA shl 1 or if (isCarry) 1 else 0
         isCarry = registerA and DataConstants.BIT8 != 0
         registerA = registerA and 0xFF
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun ror(address: Int) {
@@ -1054,7 +1054,7 @@ class CPU(private val cpuRAM: RAM) {
         data = data shr 1
         data = data and 0x7F
         data = data or if (tmp) 0x80 else 0
-        setflags(data)
+        setFlags(data)
         cpuRAM.write(address, data)
     }
 
@@ -1064,7 +1064,7 @@ class CPU(private val cpuRAM: RAM) {
         registerA = registerA shr 1
         registerA = registerA and 0x7F
         registerA = registerA or if (tmp) 128 else 0
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun breakinterrupt() {
@@ -1083,26 +1083,26 @@ class CPU(private val cpuRAM: RAM) {
         data = data shr 1
         data = data and 0x7F
         cpuRAM.write(address, data)
-        setflags(data)
+        setFlags(data)
     }
 
     private fun lsrA() {
         isCarry = registerA and DataConstants.BIT0 != 0
         registerA = registerA shr 1
         registerA = registerA and 0x7F
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun eor(address: Int) {
         registerA = registerA xor cpuRAM.read(address)
         registerA = registerA and 0xff
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun ora(address: Int) {
         registerA = registerA or cpuRAM.read(address)
         registerA = registerA and 0xff
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun bit(address: Int) {
@@ -1168,7 +1168,7 @@ class CPU(private val cpuRAM: RAM) {
         ++tmp
         tmp = tmp and 0xff
         cpuRAM.write(address, tmp)
-        setflags(tmp)
+        setFlags(tmp)
     }
 
     private fun dec(address: Int) {
@@ -1177,7 +1177,7 @@ class CPU(private val cpuRAM: RAM) {
         --tmp
         tmp = tmp and 0xff
         cpuRAM.write(address, tmp)
-        setflags(tmp)
+        setFlags(tmp)
     }
 
     private fun adc(address: Int) {
@@ -1198,7 +1198,7 @@ class CPU(private val cpuRAM: RAM) {
         isCarry = result shr 8 != 0
         isOverflow = registerA xor value and 0x80 == 0 && registerA xor result and 0x80 != 0
         registerA = result and 0xff
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun sbc(address: Int) {
@@ -1219,12 +1219,12 @@ class CPU(private val cpuRAM: RAM) {
         isCarry = result shr 8 == 0
         isOverflow = registerA xor value and 0x80 != 0 && registerA xor result and 0x80 != 0
         registerA = result and 0xff
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun and(address: Int) {
         registerA = registerA and cpuRAM.read(address)
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun asl(address: Int) {
@@ -1233,7 +1233,7 @@ class CPU(private val cpuRAM: RAM) {
         isCarry = data and DataConstants.BIT7 != 0
         data = data shl 1
         data = data and 0xff
-        setflags(data)
+        setFlags(data)
         cpuRAM.write(address, data)
     }
 
@@ -1241,7 +1241,7 @@ class CPU(private val cpuRAM: RAM) {
         isCarry = registerA and DataConstants.BIT7 != 0
         registerA = registerA shl 1
         registerA = registerA and 0xff
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun cmp(regval: Int, address: Int) {
@@ -1267,20 +1267,20 @@ class CPU(private val cpuRAM: RAM) {
 
     private fun lda(address: Int) {
         registerA = cpuRAM.read(address)
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun ldx(address: Int) {
         registerX = cpuRAM.read(address)
-        setflags(registerX)
+        setFlags(registerX)
     }
 
     private fun ldy(address: Int) {
         registerY = cpuRAM.read(address)
-        setflags(registerY)
+        setFlags(registerY)
     }
 
-    private fun setflags(result: Int) {
+    private fun setFlags(result: Int) {
         isZero = result == 0
         isNegative = result and DataConstants.BIT7 != 0
     }
@@ -1305,7 +1305,7 @@ class CPU(private val cpuRAM: RAM) {
     private fun lax(address: Int) {
         registerX = cpuRAM.read(address)
         registerA = registerX
-        setflags(registerA)
+        setFlags(registerA)
     }
 
     private fun isc(address: Int) {
@@ -1364,7 +1364,7 @@ class CPU(private val cpuRAM: RAM) {
             pageBoundryIndex = 1
         }
 
-        if (address and 0xFF00 != address + reg and 0xFF00 && d == Dummy.ONCARRY) {
+        if (address and 0xFF00 != address + reg and 0xFF00 && d == Dummy.CARRY) {
             cpuRAM.read(address and 0xFF00 or (address + reg and 0xFF))
         }
         if (d == Dummy.ALWAYS) {
@@ -1395,7 +1395,7 @@ class CPU(private val cpuRAM: RAM) {
             pageBoundryIndex = 1
         }
 
-        if (address and 0xFF00 != address + registerY and 0xFF00 && d == Dummy.ONCARRY) {
+        if (address and 0xFF00 != address + registerY and 0xFF00 && d == Dummy.CARRY) {
             cpuRAM.read(address and 0xFF00 or (address + registerY and 0xFF))
         }
         if (d == Dummy.ALWAYS) {
